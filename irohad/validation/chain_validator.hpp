@@ -18,9 +18,10 @@
 #ifndef IROHA_CHAIN_VALIDATOR_HPP
 #define IROHA_CHAIN_VALIDATOR_HPP
 
-#include <ametsuchi/mutable_storage.hpp>
-#include <model/block.hpp>
 #include <rxcpp/rx-observable.hpp>
+#include "ametsuchi/mutable_storage.hpp"
+#include "model/block.hpp"
+#include "model/commit.hpp"
 
 namespace iroha {
   namespace validation {
@@ -34,15 +35,15 @@ namespace iroha {
       /**
        * Validate method provide chain validation for application it to ledger.
        *
-       * Chain validation will validate  all signatures of new blocks
+       * Chain validation will validate all signatures of new blocks
        * and related meta information such as previous hash, height and
        * other meta information
-       * @param blocks - observable with all blocks, that should be applied
-       * simultaneously
+       * @param commit - observable with all blocks, that should be applied
+       * atomically
        * @param storage - storage that may be modified during loading
        * @return true if commit is valid, false otherwise
        */
-      virtual bool validateChain(rxcpp::observable<model::Block> &blocks,
+      virtual bool validateChain(Commit commit,
                                  ametsuchi::MutableStorage &storage) = 0;
 
       /**
